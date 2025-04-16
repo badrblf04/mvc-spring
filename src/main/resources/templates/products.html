@@ -6,11 +6,19 @@
     <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/5.3.5/css/bootstrap.min.css">
 </head>
 <body>
-<div class="p-3">
-    <table class="table">
-        <thead>
+<div class="container mt-5 p-4 bg-white border rounded shadow-sm">
+    <form method="get" th:action="@{/index}" class="mb-4">
+        <div class="input-group">
+            <input type="text" class="form-control" name="keyword" placeholder="Search by name"
+                   th:value="${keyword}">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </form>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
         <tr>
-            <th>ID</th> <th>Name</th> <th>Price</th> <th>Quantity</th>
+            <th>ID</th> <th>Name</th> <th>Price</th> <th>Quantity</th> <th>Action</th>
         </tr>
         </thead>
         <tbody>
@@ -20,11 +28,19 @@
             <td th:text="${p.price}"></td>
             <td th:text="${p.quantity}"></td>
             <td>
-                <a class="btn btn-danger" th:href="@{/delete(id=${p.id})}">Delete</a>
+                <a class="btn btn-danger btn-sm" th:href="@{/delete(id=${p.id})}">Delete</a>
             </td>
         </tr>
         </tbody>
     </table>
+
+    <ul class="nav nav-pills">
+        <li class="me-1" th:each="i : ${#numbers.sequence(0, page.length - 1)}">
+            <a th:href="@{/index(page=${i}, keyword=${keyword})}"
+               th:class="${currentPage == i ? 'btn btn-info' : 'btn btn-outline-info'}"
+               th:text="${i + 1}"></a>
+        </li>
+    </ul>
 </div>
 </body>
 </html>
